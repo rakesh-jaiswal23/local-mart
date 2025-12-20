@@ -24,7 +24,7 @@ const Navbar = () => {
             href="/"
             className="relative text-4xl font-semibold text-slate-700"
           >
-            <span className="text-green-600">go</span>cart
+            <span className="text-green-600">Local</span>mart
             <span className="text-green-600 text-5xl leading-0">.</span>
             <p className="absolute text-xs font-semibold -top-1 -right-8 px-3 p-0.5 rounded-full flex items-center gap-2 text-white bg-green-500">
               plus
@@ -72,16 +72,16 @@ const Navbar = () => {
               </button>
             </Link>
 
-            <button className="px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
+            <Link href="/login" className="px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
               Login
-            </button>
+            </Link>
           </div>
 
           {/* Mobile User Button  */}
           <div className="sm:hidden">
-            <button className="px-7 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-sm transition text-white rounded-full">
+            <Link href="/login" className="px-7 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-sm transition text-white rounded-full">
               Login
-            </button>
+            </Link>
           </div>
         </div>
       </div>
