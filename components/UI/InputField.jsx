@@ -1,4 +1,4 @@
- const InputField =  ({
+const InputField = ({
   name,
   type = 'text',
   className = '',
@@ -6,8 +6,8 @@
   placeholder,
   label,
   id,
-   maxLength= ""
-})=> {
+  maxLength = '',
+}) => {
   return (
     <div className="w-full flex flex-col gap-1">
       {label && (
@@ -23,6 +23,7 @@
         type={type}
         className={`w-full border p-2 rounded-md outline-none ${className}`}
         maxLength={maxLength}
+        autocomplete={name}
       />
     </div>
   );

@@ -1,3 +1,4 @@
+'use client';
 import { FcGoogle } from 'react-icons/fc';
 import Button from '../UI/Button';
 import Form from '../UI/Form';
@@ -5,12 +6,31 @@ import InputField from '../UI/InputField';
 import SocialButton from '../UI/SocialButton';
 import { FaGithub } from 'react-icons/fa';
 import Link from 'next/link';
+import SelectField from '../UI/SelectField';
+import { useState } from 'react';
 
 const SignUpForm = () => {
+  const options = [
+    { label: 'User', value: 'user' },
+    { label: 'Shopkeeper', value: 'shopkeeper' },
+  ];
+  const [country, setCountry] = useState('');
   return (
     <Form>
       <h1 className="text-3xl font-bold leading-4">Register</h1>
       <p> Hello there! Signup to continue. </p>
+
+      <SelectField
+        id="role"
+        label="Select role"
+        name="role"
+        options={options}
+        value={country}
+        onChange={setCountry}
+        placeholder="Choose your country"
+        className="flex-1"
+      />
+
       <div className="flex flex-col gap-4 md:flex-row">
         <InputField
           className="flex-1 "
@@ -75,10 +95,10 @@ const SignUpForm = () => {
         <SocialButton provider="Github" icon={<FaGithub />} />
       </div>
 
-      <div className='text-gray-500'>
+      <div className="text-gray-500">
         Already have an account ?{' '}
         <Link href="/login">
-          <span className='text-blue-700'>Login</span>
+          <span className="text-blue-700">Login</span>
         </Link>
       </div>
     </Form>

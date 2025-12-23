@@ -8,10 +8,10 @@ import Button from '../UI/Button';
 
 const LoginForm = () => {
   return (
-    <Form >
+    <Form>
       <h1 className="text-3xl font-bold leading-4 "> Welcome Back </h1>
       <p> Sign in to your account </p>
-  
+
       {/* email */}
       <InputField name="email" type="email" required placeholder="Enter Email address" />
       {/* password */}
@@ -35,7 +35,7 @@ const LoginForm = () => {
 
       {/* sign in button */}
 
-      <Button type="submit" label="Login"/>
+      <Button type="submit" label="Login" />
 
       {/* oauth logic  */}
 
