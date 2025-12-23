@@ -1,31 +1,22 @@
-const InputField = ({
-  name,
-  type = 'text',
-  className = '',
-  required = false,
-  placeholder,
-  label,
-  id,
-  maxLength = '',
-}) => {
+import { forwardRef } from 'react';
+
+const InputField = forwardRef(({ error, ...props }, ref) => {
   return (
     <div className="w-full flex flex-col gap-1">
-      {label && (
-        <label htmlFor={name} className="text-sm font-medium">
-          {label}
+      {props.label && (
+        <label htmlFor={props.id || props.name} className="text-sm font-medium">
+          {props.label}
         </label>
       )}
       <input
-        name={name}
-        placeholder={placeholder}
-        id={id}
-        required={required}
-        type={type}
-        className={`w-full border p-2 rounded-md outline-none ${className}`}
-        maxLength={maxLength}
-        autocomplete={name}
+        {...props}
+        ref={ref}
+        className={`w-full border p-2 rounded-md outline-none ${props.className || ''}`}
+        autoComplete={props.name}
       />
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
-};
+});
+
 export default InputField;

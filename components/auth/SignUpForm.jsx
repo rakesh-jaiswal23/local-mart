@@ -1,102 +1,100 @@
 'use client';
 import { FcGoogle } from 'react-icons/fc';
-import Button from '../UI/Button';
-import Form from '../UI/Form';
-import InputField from '../UI/InputField';
-import SocialButton from '../UI/SocialButton';
+import Button from '@/components/UI/Button';
+
+import InputField from '@/components/UI/InputField';
+import SocialButton from '@/components/UI/SocialButton';
 import { FaGithub } from 'react-icons/fa';
 import Link from 'next/link';
-import SelectField from '../UI/SelectField';
-import { useState } from 'react';
+import SelectField from '@/components/UI/SelectField';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signupSchema } from '@/schemas/signupSchema';
+import Form from '../UI/Form';
 
 const SignUpForm = () => {
   const options = [
     { label: 'User', value: 'user' },
     { label: 'Shopkeeper', value: 'shopkeeper' },
   ];
-  const [country, setCountry] = useState('');
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(signupSchema),
+  });
+
+  const onSubmit = data => {
+    console.log('Form submitted:', data);
+    // axios.post("/api/signup", data)
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-3xl font-bold leading-4">Register</h1>
-      <p> Hello there! Signup to continue. </p>
+      <p>Hello there! Signup to continue.</p>
 
       <SelectField
-        id="role"
-        label="Select role"
-        name="role"
+        label="Select Role"
         options={options}
-        value={country}
-        onChange={setCountry}
-        placeholder="Choose your country"
-        className="flex-1"
+        {...register('role')}
+        error={errors.role?.message}
       />
 
       <div className="flex flex-col gap-4 md:flex-row">
         <InputField
-          className="flex-1 "
-          name="name"
-          required
-          type="text"
           placeholder="Enter your name"
+          {...register('name')}
+          error={errors.name?.message}
         />
         <InputField
-          className="flex-1"
-          name="email"
-          required
-          type="email"
           placeholder="Enter your email"
+          type="email"
+          {...register('email')}
+          error={errors.email?.message}
         />
       </div>
+
       <div className="flex flex-col gap-4 md:flex-row">
         <InputField
-          className="flex1"
-          name="password"
-          required
-          type="password"
           placeholder="Enter your password"
+          type="password"
+          {...register('password')}
+          error={errors.password?.message}
         />
         <InputField
-          className="flex-1"
-          name="confirmPassword"
-          required
-          type="confirmPassword"
-          placeholder="Re-enter your password"
+          placeholder="Confirm your password"
+          type="password"
+          {...register('confirmPassword')}
+          error={errors.confirmPassword?.message}
         />
       </div>
+
       <div className="flex flex-col gap-4 md:flex-row">
         <InputField
-          name="phoneNumber"
-          type="tel"
           placeholder="Enter phone number"
-          required
-          maxLength={16}
+          type="tel"
+          {...register('phoneNumber')}
+          error={errors.phoneNumber?.message}
         />
-        <InputField name="referralcode" placeholder="Enter referral code" maxLength={10} />
+        <InputField
+          placeholder="Referral code"
+          {...register('referralcode')}
+          error={errors.referralcode?.message}
+        />
       </div>
 
-      <div className="text-center text-gray-500 text-sm">
-        <p>By continuing you confirm that you agreen with </p>
-        <span> our </span>
-        <Link href="termand condition">
-          <span className="text-blue-700">Term and Condition</span>
-        </Link>
-      </div>
+      <Button type="submit" label={isSubmitting ? '...Submitting' : 'Continue'} />
 
-      <Button type="submit" label="Continue" />
-
-      <div className="flex items-center gap-3 w-full">
-        <span className="flex-1 border-t"></span>
-        <span className="text-sm whitespace-nowrap">or continue with</span>
-        <span className="flex-1 border-t"></span>
-      </div>
-
-      <div className="flex justify-between gap-4 w-full">
+      <div className="flex justify-between gap-4 w-full mt-4">
         <SocialButton provider="Google" icon={<FcGoogle />} />
         <SocialButton provider="Github" icon={<FaGithub />} />
       </div>
 
-      <div className="text-gray-500">
-        Already have an account ?{' '}
+      <div className="text-gray-500 mt-4">
+        Already have an account?{' '}
         <Link href="/login">
           <span className="text-blue-700">Login</span>
         </Link>
@@ -104,4 +102,5 @@ const SignUpForm = () => {
     </Form>
   );
 };
+
 export default SignUpForm;

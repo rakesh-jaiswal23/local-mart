@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import InputField from '../UI/InputField';
 import SocialButton from '../UI/SocialButton';
@@ -5,17 +6,44 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import Form from '../UI/Form';
 import Button from '../UI/Button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoginSchema } from '@/schemas/loginSchema';
 
 const LoginForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(LoginSchema),
+  });
+  function onSubmit(data) {
+    console.log(data);
+  }
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-3xl font-bold leading-4 "> Welcome Back </h1>
       <p> Sign in to your account </p>
 
       {/* email */}
-      <InputField name="email" type="email" required placeholder="Enter Email address" />
+      <InputField
+        name="email"
+        type="email"
+        required
+        placeholder="Enter Email address"
+        {...register('email')}
+        error={errors.email?.message}
+      />
       {/* password */}
-      <InputField type="password" name="password" required placeholder="Enter password" />
+      <InputField
+        type="password"
+        name="password"
+        required
+        placeholder="Enter password"
+        {...register('password')}
+        error={errors.password?.message}
+      />
 
       {/* checkboc and  forget pass */}
 
@@ -23,8 +51,9 @@ const LoginForm = () => {
         <div className="flex items-center gap-2">
           <input
             type="checkbox"
-            name="rememberMe"
+            name="checkbox"
             className="w-4 h-4 accent-black cursor-pointer"
+            {...register('checkbox')}
           />
           <label className="">Remember me </label>
         </div>
@@ -35,7 +64,7 @@ const LoginForm = () => {
 
       {/* sign in button */}
 
-      <Button type="submit" label="Login" />
+      <Button type="submit" label={isSubmitting ? '...Submitting' : 'Login'} />
 
       {/* oauth logic  */}
 
