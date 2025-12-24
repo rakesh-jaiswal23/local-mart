@@ -11,37 +11,46 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema } from '@/schemas/signupSchema';
 import Form from '../UI/Form';
+import { signUp } from '@/lib/service/authService';
+import toast from 'react-hot-toast';
 
 const SignUpForm = () => {
-  const options = [
-    { label: 'User', value: 'user' },
-    { label: 'Shopkeeper', value: 'shopkeeper' },
-  ];
+  // const options = [
+  //   { label: 'user', value: 'user' },
+  //   { label: 'seller', value: 'seller' },
+  // ];
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = data => {
-    console.log('Form submitted:', data);
-    // axios.post("/api/signup", data)
-  };
+  async function onSubmit(data) {
+    try {
+      const res = await signUp(data);
+      toast.success(res.message);
+      reset();
+     
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-3xl font-bold leading-4">Register</h1>
       <p>Hello there! Signup to continue.</p>
 
-      <SelectField
+      {/* <SelectField
         label="Select Role"
         options={options}
         {...register('role')}
         error={errors.role?.message}
-      />
+      /> */}
 
       <div className="flex flex-col gap-4 md:flex-row">
         <InputField

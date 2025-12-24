@@ -9,17 +9,27 @@ import Button from '../UI/Button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from '@/schemas/loginSchema';
+import { login } from '@/lib/service/authService';
+import toast from 'react-hot-toast';
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(LoginSchema),
   });
-  function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(data) {
+    try {
+      const res = await login(data);
+      toast.success(res.message);
+      reset();
+      
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

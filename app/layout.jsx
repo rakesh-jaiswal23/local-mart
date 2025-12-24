@@ -8,8 +8,8 @@ import AxiosProvider from '@/lib/axiosProvider';
 const outfit = Outfit({ subsets: ['latin'], weight: ['400', '500', '600'] });
 
 export const metadata = {
-  title: 'GoCart. - Shop smarter',
-  description: 'GoCart. - Shop smarter',
+  title: 'Localmart. - Shop smarter',
+  description: 'Localmart. - Shop smarter',
 };
 
 export default function RootLayout({ children }) {
@@ -19,7 +19,12 @@ export default function RootLayout({ children }) {
         <StoreProvider>
           <AxiosProvider>
             <GlobalSkeleton>
-              <Toaster />
+              <Toaster
+                position="bottom-center"
+                toastOptions={{
+                  duration: 3000,
+                }}
+              />
               {children}
             </GlobalSkeleton>
           </AxiosProvider>
