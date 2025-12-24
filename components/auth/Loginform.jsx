@@ -11,6 +11,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from '@/schemas/loginSchema';
 import { login } from '@/lib/service/authService';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '@/lib/features/auth/authThunk';
 
 const LoginForm = () => {
   const {
@@ -21,16 +23,17 @@ const LoginForm = () => {
   } = useForm({
     resolver: zodResolver(LoginSchema),
   });
-  async function onSubmit(data) {
+  const dispatch = useDispatch();
+  
+  async function onSubmit(formdata) {
     try {
-      const res = await login(data);
-      toast.success(res.message);
-      reset();
-      
-    } catch (error) {
-      toast.error(error.message);
+      const data = await dispatch(loginUser(formdata)).unwrap();
+      toast.success(`Welcome ${data.user.name}`);
+    } catch (err) {
+      toast.error(err.message);
     }
   }
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-3xl font-bold leading-4 "> Welcome Back </h1>

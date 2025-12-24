@@ -34,7 +34,6 @@ const SignUpForm = () => {
       const res = await signUp(data);
       toast.success(res.message);
       reset();
-     
     } catch (error) {
       toast.error(error.message);
     }

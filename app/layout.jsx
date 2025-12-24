@@ -20,7 +20,6 @@ export default function RootLayout({ children }) {
           <AxiosProvider>
             <GlobalSkeleton>
               <Toaster
-                position="bottom-center"
                 toastOptions={{
                   duration: 3000,
                 }}
