@@ -11,8 +11,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from '@/schemas/loginSchema';
 import { login } from '@/lib/service/authService';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '@/lib/features/auth/authThunk';
+import { Router } from 'next/router';
+import { useRouter } from 'next/navigation';
+import { selectIsAuthenticated } from '@/lib/features/auth/authSelector';
 
 const LoginForm = () => {
   const {
@@ -24,11 +27,16 @@ const LoginForm = () => {
     resolver: zodResolver(LoginSchema),
   });
   const dispatch = useDispatch();
-  
+  const router = useRouter();
+  const Authenticated = useSelector(selectIsAuthenticated);
   async function onSubmit(formdata) {
     try {
       const data = await dispatch(loginUser(formdata)).unwrap();
-      toast.success(`Welcome ${data.user.name}`);
+
+      reset();
+      router.replace('/');
+      toast.success(`Welcome ${data?.data?.user?.name}`);
+      console.log(Authenticated);
     } catch (err) {
       toast.error(err.message);
     }

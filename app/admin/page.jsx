@@ -2,6 +2,7 @@
 import { dummyAdminDashboardData } from '@/assets/assets';
 import Loading from '@/components/Loading';
 import OrdersAreaChart from '@/components/OrdersAreaChart';
+import ProtectedRoute from '@/hoc/protectedRoute';
 import { CircleDollarSignIcon, ShoppingBasketIcon, StoreIcon, TagsIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
   if (loading) return <Loading />;
 
   return (
+    // <ProtectedRoute allowedrole={['admin']}>
     <div className="text-slate-500">
       <h1 className="text-2xl">
         Admin <span className="text-slate-800 font-medium">Dashboard</span>
@@ -63,5 +65,6 @@ export default function AdminDashboard() {
       {/* Area Chart */}
       <OrdersAreaChart allOrders={dashboardData.allOrders} />
     </div>
+    // </ProtectedRoute>
   );
 }

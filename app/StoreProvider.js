@@ -1,14 +1,30 @@
-'use client'
-import { useRef } from 'react'
-import { Provider } from 'react-redux'
-import { makeStore } from '../lib/store'
+'use client';
+
+import { useRef, useEffect } from 'react';
+import { Provider, useDispatch } from 'react-redux';
+import { makeStore } from '../lib/store';
+import { checkAuth } from '@/lib/features/auth/authThunk';
+
+function AppBootstrap({ children }) {
+  const dispatch = useDispatch();
+  // AppBootstrap initialize the data once when the window reload
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  return children;
+}
 
 export default function StoreProvider({ children }) {
-  const storeRef = useRef(undefined)
+  const storeRef = useRef(); // it is a container
+
   if (!storeRef.current) {
-    // Create the store instance the first time this renders
-    storeRef.current = makeStore()
+    storeRef.current = makeStore(); // store the redux-store in container
   }
 
-  return <Provider store={storeRef.current}>{children}</Provider>
+  return (
+    <Provider store={storeRef.current}>
+      <AppBootstrap>{children}</AppBootstrap>
+    </Provider>
+  );
 }
