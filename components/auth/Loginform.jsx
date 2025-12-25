@@ -16,6 +16,7 @@ import { loginUser } from '@/lib/features/auth/authThunk';
 import { Router } from 'next/router';
 import { useRouter } from 'next/navigation';
 import { selectIsAuthenticated } from '@/lib/features/auth/authSelector';
+import { useEffect } from 'react';
 
 const LoginForm = () => {
   const {
@@ -28,19 +29,24 @@ const LoginForm = () => {
   });
   const dispatch = useDispatch();
   const router = useRouter();
-  const Authenticated = useSelector(selectIsAuthenticated);
+  const isAuth = useSelector(selectIsAuthenticated);
   async function onSubmit(formdata) {
     try {
-      const data = await dispatch(loginUser(formdata)).unwrap();
-
+      const res = await dispatch(loginUser(formdata)).unwrap();
+      console.log(res);
       reset();
-      router.replace('/');
-      toast.success(`Welcome ${data?.data?.user?.name}`);
-      console.log(Authenticated);
+
+      toast.success(`Welcome ${res?.data?.user?.name}`);
     } catch (err) {
       toast.error(err.message);
     }
   }
+
+  useEffect(() => {
+    if (isAuth) {
+      router.replace('/');
+    }
+  }, [isAuth]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

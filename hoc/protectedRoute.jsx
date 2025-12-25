@@ -3,34 +3,39 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { selectAuthState } from '@/lib/features/auth/authSelector';
+import { selectAuthState, selectIsAuthenticated } from '@/lib/features/auth/authSelector';
+import toast from 'react-hot-toast';
+import Loading from '@/components/Loading';
 
 const ProtectedRoute = ({ children, allowedrole = [] }) => {
   const router = useRouter();
-  const {  role, loading } = useSelector(selectAuthState);
-const isLogin = useSelector(selectAuthState)
+  const { role, loading } = useSelector(selectAuthState);
+  const isLogin = useSelector(selectIsAuthenticated);
 
-  useEffect(() => {
-    if (loading) return; 
+ useEffect(() => {
+  if (loading) return;
 
-    // Not logged in
-    if (!isLogin) {
-      router.replace('/login');
-      return;
-    }
+  if (!isLogin) {
+    router.replace('/login');
+    return;
+  }
 
-    //  Role not allowed
-    if (allowedrole.length && !allowedrole.includes(role)) {
-      router.replace('/unauthorized');
-    }
-  }, [isLogin, role, loading, allowedrole, router]);
+  if (allowedrole.length && !allowedrole.includes(role)) {
+    toast.error('You are unauthorized');
+    router.replace('/');
+  }
+}, [loading, isLogin, role]);
 
-  //  Prevent flicker
-  if (loading) return null;
 
-  //  Extra safety
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loading />
+      </div>
+    );
+  }
+
   if (!isLogin) return null;
-
   if (allowedrole.length && !allowedrole.includes(role)) return null;
 
   return children;

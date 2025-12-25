@@ -13,6 +13,9 @@ import { signupSchema } from '@/schemas/signupSchema';
 import Form from '../UI/Form';
 import { signUp } from '@/lib/service/authService';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { selectAuthState } from '@/lib/features/auth/authSelector';
+import { setAccessToken } from '@/lib/features/auth/authSlice';
 
 const SignUpForm = () => {
   // const options = [
@@ -28,10 +31,13 @@ const SignUpForm = () => {
   } = useForm({
     resolver: zodResolver(signupSchema),
   });
+  const dispatch = useDispatch();
 
   async function onSubmit(data) {
     try {
       const res = await signUp(data);
+      console.log(res);
+      dispatch(setAccessToken(res.accessToken));
       toast.success(res.message);
       reset();
     } catch (error) {
