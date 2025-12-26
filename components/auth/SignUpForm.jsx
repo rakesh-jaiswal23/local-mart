@@ -41,7 +41,7 @@ const SignUpForm = () => {
       toast.success(res.message);
       reset();
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error?.data?.messgae);
     }
   }
 

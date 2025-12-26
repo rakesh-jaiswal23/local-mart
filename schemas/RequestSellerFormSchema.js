@@ -2,7 +2,7 @@ import { z } from 'zod';
 export const RequestSellerFormSchema = z.object({
   username: z.string().min(3, 'userName musb be at least 3  characters'),
 
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+  storeName: z.string().min(2, 'Name must be at least 2 characters'),
 
   description: z.string().optional(),
 
@@ -17,12 +17,12 @@ export const RequestSellerFormSchema = z.object({
 
   address: z.string().min(5, 'Address is required'),
 
-  storelogo: z
-    .any()
-    .refine(files => files instanceof FileList && files.length > 0, 'Store logo is required')
-    .refine(files => files?.[0]?.size <= 5 * 1024 * 1024, 'Max image size is 5MB')
-    .refine(
-      files => ['image/jpeg', 'image/png', 'image/webp'].includes(files?.[0]?.type),
-      'Only JPG, PNG, WEBP allowed',
-    ),
+  // storelogo: z
+  //   .any()
+  //   .refine(files => files instanceof FileList && files.length > 0, 'Store logo is required')
+  //   .refine(files => files?.[0]?.size <= 5 * 1024 * 1024, 'Max image size is 5MB')
+  //   .refine(
+  //     files => ['image/jpeg', 'image/png', 'image/webp'].includes(files?.[0]?.type),
+  //     'Only JPG, PNG, WEBP allowed',
+  //   ),
 });

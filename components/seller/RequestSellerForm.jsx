@@ -6,6 +6,8 @@ import InputField from '../UI/InputField';
 import Button from '../UI/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RequestSellerFormSchema } from '@/schemas/RequestSellerFormSchema';
+import { sellerRequest } from '@/lib/service/authService';
+import toast from 'react-hot-toast';
 
 function RequestSellerForm() {
   const {
@@ -14,9 +16,17 @@ function RequestSellerForm() {
     watch,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(RequestSellerFormSchema) });
+
   const logo = watch('storelogo');
-  const handleFormSubmit = formdata => {
-    console.log(formdata);
+  const handleFormSubmit = async formdata => {
+    try {
+      const res = await sellerRequest(formdata);
+      console.log(res);
+      toast.success(res.data?.message);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message);
+    }
   };
 
   return (
@@ -46,7 +56,7 @@ function RequestSellerForm() {
             height={100}
           />
           <input id="storelogo" type="file" accept="image/*" hidden {...register('storelogo')} />
-          <p className="text-red-500 text-sm" >{errors?.storelogo?.message}</p>
+          <p className="text-red-500 text-sm">{errors?.storelogo?.message}</p>
         </label>
         <InputField
           label="username"
@@ -61,7 +71,7 @@ function RequestSellerForm() {
           label="name"
           name="name"
           type="text"
-          {...register('name')}
+          {...register('storeName')}
           className="mt-2 max-w-lg  border-slate-300 outline-slate-400"
           placeholder="Enter your store name"
           error={errors?.name?.message}
@@ -80,7 +90,7 @@ function RequestSellerForm() {
         <InputField
           label="contact Number"
           name="contact"
-         type="number"
+          type="number"
           {...register('contactNumber')}
           className="mt-2 max-w-lg  border-slate-300 outline-slate-400"
           placeholder="Enter your store contact number"
