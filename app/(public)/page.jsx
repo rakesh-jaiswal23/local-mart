@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import Newsletter from "@/components/Newsletter";
 import OurSpecs from "@/components/OurSpec";
 import LatestProducts from "@/components/LatestProducts";
+import GlobalSkeleton from "../GlobalSkeleton";
 
 export default function Home() {
     return (
