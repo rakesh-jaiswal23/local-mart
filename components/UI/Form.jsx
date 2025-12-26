@@ -3,7 +3,7 @@ const Form = ({ className = '', children, onSubmit }) => {
     <form
       method="POST"
       onSubmit={onSubmit}
-      className={`m-8 flex flex-col items-center gap-6 ${className}`}
+      className={` ${className} m-8 flex flex-col items-center gap-6 `}
     >
       {children}
     </form>
