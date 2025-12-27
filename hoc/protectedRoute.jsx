@@ -9,24 +9,29 @@ import Loading from '@/components/Loading';
 
 const ProtectedRoute = ({ children, allowedrole = [] }) => {
   const router = useRouter();
-  const { role, loading } = useSelector(selectAuthState);
+  const { role, loading ,accessToken} = useSelector(selectAuthState);
   const isLogin = useSelector(selectIsAuthenticated);
-  console.log(allowedrole.includes(role))
+  console.log(allowedrole.includes(role));
 
- useEffect(() => {
-  if (loading) return;
+  useEffect(() => {
+    console.log('loading');
+    if (loading) return;
 
-  if (!isLogin) {
-    router.replace('/login');
-    return;
-  }
+    if (!isLogin) {
+      router.replace('/login');
+      return;
+    }
 
-  if (allowedrole.length && !allowedrole.includes(role)) {
-    // toast.error('You are unauthorized');
-    router.replace('/');
-  }
-}, [loading, isLogin, role]);
-
+    if (allowedrole.length && !allowedrole.includes(role)) {
+      // toast.error('You are unauthorized');
+      router.replace('/');
+    }
+    if (accessToken) {
+      if (role === 'admin') router.replace('/admin');
+      else if (role === 'seller') router.replace('/store');
+      else router.replace('/');
+    }
+  }, [loading, isLogin, role]);
 
   if (loading) {
     return (
