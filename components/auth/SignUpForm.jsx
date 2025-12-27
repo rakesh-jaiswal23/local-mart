@@ -36,12 +36,14 @@ const SignUpForm = () => {
   async function onSubmit(data) {
     try {
       const res = await signUp(data);
-      console.log(res);
-      dispatch(setAccessToken(res.accessToken));
-      toast.success(res.message);
+
+      dispatch(setAccessToken(res?.data?.accessToken));
+      toast.success(res?.data?.message);
       reset();
     } catch (error) {
-      toast.error(error?.data?.messgae);
+      console.log(error);
+
+      toast.error(error?.data?.message || 'Something went wrong');
     }
   }
 
