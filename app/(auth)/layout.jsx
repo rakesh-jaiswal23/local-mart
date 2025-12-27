@@ -1,12 +1,15 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import GuestGuard from '../GuestGuard';
 
-export default function AuthLayout({ children }) {
+export default function SignupPage({ children }) {
   return (
     <>
-      <Navbar />
-      {children}
-      <Footer />
+      <GuestGuard>
+        <Navbar />
+        {children}
+        <Footer />
+      </GuestGuard>
     </>
   );
 }

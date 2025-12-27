@@ -11,6 +11,7 @@ const ProtectedRoute = ({ children, allowedrole = [] }) => {
   const router = useRouter();
   const { role, loading } = useSelector(selectAuthState);
   const isLogin = useSelector(selectIsAuthenticated);
+  console.log(allowedrole.includes(role))
 
  useEffect(() => {
   if (loading) return;
@@ -21,7 +22,7 @@ const ProtectedRoute = ({ children, allowedrole = [] }) => {
   }
 
   if (allowedrole.length && !allowedrole.includes(role)) {
-    toast.error('You are unauthorized');
+    // toast.error('You are unauthorized');
     router.replace('/');
   }
 }, [loading, isLogin, role]);

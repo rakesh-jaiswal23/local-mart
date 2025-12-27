@@ -7,12 +7,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { LoginLogoutButton } from './UI/LoginLogoutButton';
 
 const Navbar = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const isLogin = useSelector(selectIsAuthenticated);
-
 
   const [search, setSearch] = useState('');
   const cartCount = useSelector(state => state.cart.total);
@@ -20,10 +18,6 @@ const Navbar = () => {
   const handleSearch = e => {
     e.preventDefault();
     router.push(`/shop?search=${search}`);
-  };
-  const handleLogout = () => {
-    logout();
-    dispatch(setIsAuthenticated(false));
   };
 
   return (
@@ -76,26 +70,8 @@ const Navbar = () => {
                 {cartCount}
               </button>
             </Link>
-
-            {!isLogin && (
-              <Link
-                href="/login"
-                className="px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full"
-              >
-                Login
-              </Link>
-            )}
-            {isLogin && (
-              <Link
-                href="/login"
-                onClick={handleLogout}
-                className="px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full"
-              >
-                Logout
-              </Link>
-            )}
           </div>
-
+          <LoginLogoutButton />
           {/* Mobile User Button  */}
           <div className="sm:hidden">
             <Link

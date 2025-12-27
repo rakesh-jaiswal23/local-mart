@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '@/lib/features/auth/authThunk';
 import { Router } from 'next/router';
 import { useRouter } from 'next/navigation';
-import { selectIsAuthenticated } from '@/lib/features/auth/authSelector';
+import { selectAuthState, selectIsAuthenticated } from '@/lib/features/auth/authSelector';
 import { useEffect } from 'react';
 
 const LoginForm = () => {
@@ -30,23 +30,32 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const isAuth = useSelector(selectIsAuthenticated);
+  const { role } = useSelector(selectAuthState);
   async function onSubmit(formdata) {
     try {
       const res = await dispatch(loginUser(formdata)).unwrap();
-      console.log(res);
       reset();
-
       toast.success(`Welcome ${res?.data?.user?.name}`);
+      console.log(role)
+      // if (role === 'admin') router.replace('/admin');
+      // else if (role === 'seller') router.replace('/store');
+      // else router.replace('/');
     } catch (err) {
       toast.error(err.message);
     }
   }
 
   useEffect(() => {
-    if (isAuth) {
+    if (!isAuth) return;
+    console.log(isAuth, role);
+    if (role === 'user') {
       router.replace('/');
+    } else if (role === 'seller') {
+      router.replace('/store');
+    } else if (role === 'admin') {
+      router.replace('/admin');
     }
-  }, [isAuth]);
+  }, [isAuth, role]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

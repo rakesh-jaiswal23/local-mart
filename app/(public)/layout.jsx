@@ -1,16 +1,18 @@
-'use client'
-import Banner from "@/components/Banner";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+'use client';
+import Banner from '@/components/Banner';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import ProtectedRoute from '@/hoc/protectedRoute';
 
 export default function PublicLayout({ children }) {
-
-    return (
-        <>
-            <Banner />
-            <Navbar />
-            {children}
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <ProtectedRoute allowedrole={['user']}>
+        <Banner />
+        <Navbar />
+        {children}
+        <Footer />
+      </ProtectedRoute>
+    </>
+  );
 }

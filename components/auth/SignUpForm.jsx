@@ -13,9 +13,10 @@ import { signupSchema } from '@/schemas/signupSchema';
 import Form from '../UI/Form';
 import { signUp } from '@/lib/service/authService';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
-import { selectAuthState } from '@/lib/features/auth/authSelector';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAuthState, selectIsAuthenticated } from '@/lib/features/auth/authSelector';
 import { setAccessToken } from '@/lib/features/auth/authSlice';
+import { useEffect } from 'react';
 
 const SignUpForm = () => {
   // const options = [
@@ -32,20 +33,34 @@ const SignUpForm = () => {
     resolver: zodResolver(signupSchema),
   });
   const dispatch = useDispatch();
-
+  const isAuth = useSelector(selectIsAuthenticated);
+  const { role } = useSelector(selectAuthState);
   async function onSubmit(data) {
     try {
       const res = await signUp(data);
-
       dispatch(setAccessToken(res?.data?.accessToken));
-      toast.success(res?.data?.message);
       reset();
+      toast.success(res?.data?.message);
+      // if (role === 'admin') router.replace('/admin');
+      // else if (role === 'seller') router.replace('/store');
+      // else router.replace('/');
     } catch (error) {
       console.log(error);
 
       toast.error(error?.data?.message || 'Something went wrong');
     }
   }
+  useEffect(() => {
+    if (!isAuth) return;
+
+    if (role === 'user') {
+      router.replace('/');
+    } else if (role === 'seller') {
+      router.replace('/store');
+    } else if (role === 'admin') {
+      router.replace('/admin');
+    }
+  }, [isAuth, role]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

@@ -5,6 +5,7 @@ import './globals.css';
 import GlobalSkeleton from './GlobalSkeleton';
 import AxiosProvider from '@/lib/axiosProvider';
 
+
 const outfit = Outfit({ subsets: ['latin'], weight: ['400', '500', '600'] });
 
 export const metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({ children }) {
                   duration: 3000,
                 }}
               />
-              {children}
+             {children}
             </GlobalSkeleton>
           </AxiosProvider>
         </StoreProvider>
